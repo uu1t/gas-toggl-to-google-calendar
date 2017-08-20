@@ -2,7 +2,7 @@ interface TimeEntry {
   description: string;
   duration: number;
   id: number;
-  pid: number;
+  pid?: number;
   start: string;
   tags?: string[];
   wid: number;
@@ -87,6 +87,14 @@ class TogglToGoogleCalendar {
   toggl: Toggl;
   calendar: GoogleAppsScript.Calendar.Calendar;
 
+  titleFn: (entry: TimeEntry) => string = (entry) => {
+    let title = entry.description;
+    if (entry.pid) {
+      title += ` [${this.toggl.getProject(entry.pid).name}]`;
+    }
+    return title;
+  }
+
   constructor(public togglAPIToken: string, public calendarID: string) {
     this.toggl = new Toggl(togglAPIToken);
     this.calendar = CalendarApp.getCalendarById(calendarID);
@@ -99,8 +107,7 @@ class TogglToGoogleCalendar {
       if (Toggl.entryIsRunning(entry) || Toggl.entryHasTag(entry, syncedEntryTag)) {
         continue;
       }
-      const project = this.toggl.getProject(entry.pid);
-      const title = `${entry.description} [${project.name}]`;
+      const title = this.titleFn(entry);
       const startTime = new Date(entry.start);
       const endTime = new Date(startTime.getTime() + entry.duration * 1000);
       Logger.log({ title, startTime, endTime, message: 'creating calendar event...' });
