@@ -125,9 +125,16 @@ class TogglToGoogleCalendar {
 
 function main() {
   const scriptProperties = PropertiesService.getScriptProperties();
-  const togglAPIToken = scriptProperties.getProperty('TOGGL_API_TOKEN');
-  const calendarID = scriptProperties.getProperty('CALENDAR_ID');
-  const syncedEntryTag = scriptProperties.getProperty('SYNCED_ENTRY_TAG');
+  const togglAPIToken = scriptProperties.getProperty('TOGGL_API_TOKEN') || '';
+  const calendarID = scriptProperties.getProperty('CALENDAR_ID') || '';
+  const syncedEntryTag = scriptProperties.getProperty('SYNCED_ENTRY_TAG') || '.syncedToGcal';
+
+  if (!togglAPIToken) {
+    throw new Error('Script property `TOGGL_API_TOKEN` is required.');
+  }
+  if (!calendarID) {
+    throw new Error('Script property `CALENDAR_ID` is required.');
+  }
 
   const now = new Date();
   const startTime = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 1); // 1 day ago
