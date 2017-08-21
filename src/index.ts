@@ -1,63 +1,32 @@
-interface TimeEntry {
-  description: string;
-  duration: number;
-  id: number;
-  pid?: number;
-  start: string;
-  tags?: string[];
-  wid: number;
-}
-
-interface Project {
-  cid: number;
-  id: number;
-  name: string;
-}
-
 class Toggl {
   static BASE_URL = 'https://www.toggl.com/api/v8/';
-  projects: { [key: number]: Project } = {};
-
-  static entryIsRunning(entry: TimeEntry): boolean {
-    return entry.duration < 0;
-  }
-
-  static entryHasTag(entry: TimeEntry, needle: string): boolean {
-    if (entry.tags) {
-      for (const tag of entry.tags) {
-        if (tag === needle) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  projects: { [key: number]: Toggl.Project } = {};
 
   constructor(public token: string) {
   }
 
-  getTimeEntries(startTime: Date, endTime: Date): TimeEntry[] {
+  getTimeEntries(startTime: Date, endTime: Date): Toggl.TimeEntry[] {
     const path = `time_entries`
       + `?start_date=${encodeURIComponent(startTime.toISOString())}`
       + `&end_date=${encodeURIComponent(endTime.toISOString())}`;
 
-    const entries: TimeEntry[] = JSON.parse(this.request('get', path));
+    const entries: Toggl.TimeEntry[] = JSON.parse(this.request('get', path));
     Logger.log({ entries, message: 'got time entries' });
     return entries;
   }
 
-  getProject(pid: number): Project {
+  getProject(pid: number): Toggl.Project {
     if (this.projects[pid]) {
       return this.projects[pid];
     }
     const path = `projects/${pid}`;
-    const project: { data: Project } = JSON.parse(this.request('get', path));
+    const project: { data: Toggl.Project } = JSON.parse(this.request('get', path));
     Logger.log({ project, message: 'got project' });
     this.projects[pid] = project.data;
     return project.data;
   }
 
-  addTagToTimeEntries(tag: string, entries: TimeEntry[]) {
+  addTagToTimeEntries(tag: string, entries: Toggl.TimeEntry[]) {
     const path = 'time_entries/' + entries.map(entry => entry.id).join(',');
     const payload = JSON.stringify({
       time_entry: {
@@ -83,11 +52,44 @@ class Toggl {
   }
 }
 
+namespace Toggl {
+  export interface TimeEntry {
+    description: string;
+    duration: number;
+    id: number;
+    pid?: number;
+    start: string;
+    tags?: string[];
+    wid: number;
+  }
+
+  export interface Project {
+    cid: number;
+    id: number;
+    name: string;
+  }
+
+  export function entryIsRunning(entry: TimeEntry): boolean {
+    return entry.duration < 0;
+  }
+
+  export function entryHasTag(entry: TimeEntry, needle: string): boolean {
+    if (entry.tags) {
+      for (const tag of entry.tags) {
+        if (tag === needle) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+}
+
 class TogglToGoogleCalendar {
   toggl: Toggl;
   calendar: GoogleAppsScript.Calendar.Calendar;
 
-  titleFn: (entry: TimeEntry) => string = (entry) => {
+  titleFn: (entry: Toggl.TimeEntry) => string = (entry) => {
     let title = entry.description;
     if (entry.pid) {
       title += ` [${this.toggl.getProject(entry.pid).name}]`;
@@ -102,7 +104,7 @@ class TogglToGoogleCalendar {
 
   run(startTime: Date, endTime: Date, syncedEntryTag: string) {
     const entries = this.toggl.getTimeEntries(startTime, endTime);
-    const syncedEntries: TimeEntry[] = [];
+    const syncedEntries: Toggl.TimeEntry[] = [];
     for (const entry of entries) {
       if (Toggl.entryIsRunning(entry) || Toggl.entryHasTag(entry, syncedEntryTag)) {
         continue;
