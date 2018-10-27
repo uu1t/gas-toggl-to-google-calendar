@@ -1,8 +1,10 @@
 {
   "name": "gas-toggl-to-google-calendar",
   "version": "0.1.0",
-  "description": "",
-  "main": "out/index.js",
+  "author": "Yuichi Tanikawa <u1.tanikawa@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/uu1t/gas-toggl-to-google-calendar/issues"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/google-apps-script": "0.0.13",
@@ -11,6 +13,13 @@
     "tslint-config-airbnb": "^5.2.1",
     "typescript": "^2.4.2"
   },
+  "homepage": "https://github.com/uu1t/gas-toggl-to-google-calendar#README",
+  "license": "MIT",
+  "main": "out/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uu1t/gas-toggl-to-google-calendar.git"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf out/*",
@@ -18,15 +27,5 @@
     "lint": "tslint src/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsc -w"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/itiut/gas-toggl-to-google-calendar.git"
-  },
-  "author": "Yuichi Tanikawa <t.yuichi111@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/itiut/gas-toggl-to-google-calendar/issues"
-  },
-  "homepage": "https://github.com/itiut/gas-toggl-to-google-calendar#README"
+  }
 }
