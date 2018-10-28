@@ -20,8 +20,8 @@ export class TimeEntry implements TimeEntryJSON {
     public description: string,
     public start: string,
     public duration: number,
-    public pid?: number,
     public stop?: string,
+    public pid?: number,
     // populated
     public project?: Project
   ) {}
@@ -35,7 +35,7 @@ export class TimeEntry implements TimeEntryJSON {
   }
 
   get title(): string {
-    return this.description + this.project ? ` [${this.project!.name}]` : '';
+    return this.description + (this.project ? ` [${this.project!.name}]` : '');
   }
 
   get isRunning(): boolean {

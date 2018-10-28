@@ -11,12 +11,19 @@
   "devDependencies": {
     "@google/clasp": "^1.6.3",
     "@types/google-apps-script": "0.0.31",
+    "@types/jest": "^23.3.8",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.4",
     "ts-loader": "^5.2.2",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2"
   },
   "homepage": "https://github.com/uu1t/gas-toggl-to-google-calendar#README",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
   "license": "MIT",
   "main": "dist/index.js",
   "repository": {
@@ -27,6 +34,6 @@
     "build": "webpack",
     "deploy": "clasp push",
     "predeploy": "npm run build -- -p",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   }
 }
