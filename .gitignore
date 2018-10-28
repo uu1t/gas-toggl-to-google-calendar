@@ -1,5 +1,4 @@
-dist/*
-!dist/index.js
+dist/bundle.js
 
 
 ### https://raw.github.com/github/gitignore/238424389c3728e2830d929de58ca0d344557db6/Node.gitignore
