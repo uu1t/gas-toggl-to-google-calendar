@@ -18,15 +18,13 @@ export function run() {
     throw new Error("Can't access to the calendar: " + calendarId);
   }
 
-  const syncDurationInDays =
-    Math.max(
-      Number(scriptProperties.getProperty('SYNC_DURATION_IN_HOURS')),
-      0
-    ) || 7;
+  const syncPeriodInDays =
+    Math.max(Number(scriptProperties.getProperty('SYNC_PERIOD_IN_DAYS')), 0) ||
+    7;
 
   const now = new Date();
   const startTime = new Date(
-    now.getTime() - 1000 * 60 * 60 * 24 * syncDurationInDays
+    now.getTime() - 1000 * 60 * 60 * 24 * syncPeriodInDays
   );
 
   const client = new Client(togglApiToken);
