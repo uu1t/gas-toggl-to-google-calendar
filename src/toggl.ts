@@ -69,8 +69,10 @@ export class Client {
   getTimeEntries(startTime: Date, endTime: Date): TimeEntry[] {
     const path =
       'time_entries?' +
-      `start_date=${encodeURIComponent(startTime.toISOString())}` +
-      `end_date=${encodeURIComponent(endTime.toISOString())}`;
+      [
+        `start_date=${encodeURIComponent(startTime.toISOString())}`,
+        `end_date=${encodeURIComponent(endTime.toISOString())}`
+      ].join('&');
     const entries = this.get<TimeEntryJSON[]>(path).map(TimeEntry.fromJSON);
     for (const entry of entries) {
       if (entry.pid) {
