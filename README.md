@@ -6,14 +6,14 @@
 
 ## Usage
 
-1. Build this script, which will generate `dist/bundle.js`.
+1. Insert your `CALENDAR_ID` and `TOGGL_API_TOKEN` properties in the `src/index.ts` file.
+1. Build the script, which will generate `dist/bundle.js`.
    ```
    npm install
    npm run build
    ```
 1. Upload `dist/index.js` and `dist/bundle.js` to Google Apps Script.  
    If you're using [@google/clasp](https://github.com/google/clasp), edit `scriptId` property in `.clasp.json` and run `npm run deploy`.
-1. Set `CALENDAR_ID` and `TOGGL_API_TOKEN` script properties.
 1. Create a Time-driven trigger to run `main` function periodically (e.g. every hour).
 
 ### Custom variables (script properties)

@@ -3,6 +3,10 @@ import { EntriesHash, sync } from './calendar';
 
 export function run() {
   const scriptProperties = PropertiesService.getScriptProperties();
+  
+  scriptProperties.setProperty('CALENDAR_ID', 'INSERT CALENDAR ID HERE');
+  scriptProperties.setProperty('TOGGL_API_TOKEN', 'INSERT TOGGL API TOKEN HERE');
+ 
   const togglApiToken = scriptProperties.getProperty('TOGGL_API_TOKEN');
   const calendarId = scriptProperties.getProperty('CALENDAR_ID');
 
