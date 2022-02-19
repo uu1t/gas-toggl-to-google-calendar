@@ -1,4 +1,4 @@
-const baseUrl = 'https://www.toggl.com/api/v8/';
+const baseUrl = 'https://api.track.toggl.com/api/v8/';
 
 export interface Project {
   id: number;
